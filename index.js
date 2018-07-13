@@ -36,11 +36,8 @@ const META_TABLE = 'metainfo';
 
 async function hasTable() {
   const { rowCount } = await query(`
-    SELECT table_name
-    FROM information_schema.tables
-    WHERE  table_schema = $1::text
-    AND    table_name = $2::text;
-  `, ['public', META_TABLE]);
+    SHOW TABLES LIKE ?
+  `, [META_TABLE]);
   return (rowCount > 0);
 }
 
