@@ -45,8 +45,8 @@ async function hasTable() {
 }
 
 exports.connect = async () => {
-  log.info('Connect DB (mysql://%s:%s):', host, port, database);
-  pool = new MySQL2.createPool(options);
+  log.info('Connect DB (mysql://%s:%s):', options.host, options.port, options.database);
+  pool = MySQL2.createPool(options);
 };
 
 exports.pool = () => pool;
