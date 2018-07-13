@@ -68,7 +68,7 @@ ctl.metainfo(async () => {
     get: async () => {
       if (!await hasTable()) {
         await query(`
-          CREATE TABLE IF NOT EXISTS ${META_TABLE} (setting text unique, value text)
+          CREATE TABLE IF NOT EXISTS ${META_TABLE} (setting varchar(256) unique, value text)
         `);
       }
       const { rowCount, rows } = await query(`
