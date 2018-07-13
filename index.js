@@ -54,11 +54,12 @@ ctl.metainfo(async () => {
   if (!pool) return;
   return {
     set: async (val) => {
+      const v = JSON.stringify(val);
       await query(`
         INSERT INTO ${META_TABLE} (setting, value)
         VALUES ('${META_KEY}', ?)
-        ON DUPLICATE KEY IGNORE
-      `, [JSON.stringify(val)]);
+        ON DUPLICATE KEY UPDATE value = ?
+      `, [v, v]);
       await query(`
         UPDATE ${META_TABLE}
         SET value = ?
