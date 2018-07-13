@@ -35,10 +35,10 @@ const META_KEY = 'versions';
 const META_TABLE = 'metainfo';
 
 async function hasTable() {
-  const { rowCount } = await query(`
+  const [rows] = await query(`
     SHOW TABLES LIKE ?
   `, [META_TABLE]);
-  return (rowCount > 0);
+  return (rows.length > 0);
 }
 
 exports.connect = async () => {
@@ -71,10 +71,10 @@ ctl.metainfo(async () => {
           CREATE TABLE IF NOT EXISTS ${META_TABLE} (setting varchar(256) unique, value text)
         `);
       }
-      const { rowCount, rows } = await query(`
+      const [rows] = await query(`
         SELECT value FROM ${META_TABLE} WHERE setting = '${META_KEY}'
       `);
-      if (rowCount === 0) return;
+      if (rows.length === 0) return;
       return JSON.parse(rows[0].value);
     },
   };
