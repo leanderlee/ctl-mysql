@@ -1,0 +1,15 @@
+{
+  "name": "ctl-mysql",
+  "version": "1.0.0",
+  "description": "CTL MySQL wrapper",
+  "main": "index.js",
+  "repository": "git@github.com:leanderlee/ctl-mysql.git",
+  "author": "Leander Lee <me@leander.ca>",
+  "license": "MIT",
+  "peerDependencies": {
+    "ctl": ">=1.0.0"
+  },
+  "dependencies": {
+    "mysql2": "^1.5.3"
+  }
+}
