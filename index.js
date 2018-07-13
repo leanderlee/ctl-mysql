@@ -23,7 +23,7 @@ async function query(sql, args) {
   } catch (e) {
     error = e;
   }
-  pool.releaseConnection(conn);
+  conn.release();
   if (error) {
     log.error(error);
     throw error;
