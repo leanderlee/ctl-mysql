@@ -1,5 +1,5 @@
 const ctl = require('ctl');
-const MySQL2 = require('mysql2/promise');
+const MySQL2 = require('mysql2');
 const log = ctl.library('logging')('mysql');
 const config = ctl.library('config');
 
@@ -15,20 +15,19 @@ const options = Object.assign({}, {
 }, config.mysql);
 
 async function query(sql, args) {
-  const conn = await pool.getConnection();
-  let result = null;
-  let error = null;
-  try {
-    result = await conn.query(sql, args);
-  } catch (e) {
-    error = e;
-  }
-  conn.release();
-  if (error) {
-    log.error(error);
-    throw error;
-  }
-  return result;
+  return new Promise((resolve, reject) => {
+    pool.getConnection((getConnErr, conn) => {
+      if (getConnErr) return reject(getConnErr);
+      conn.query(sql, args, (queryErr, results, fields) => {
+        pool.releaseConnection(conn);
+        if (queryErr) {
+          log.error(queryErr);
+          return reject(queryErr);
+        }
+        resolve([results, fields]);
+      });
+    });
+  });
 }
 
 const META_KEY = 'versions';
